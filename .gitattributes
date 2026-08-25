@@ -1,0 +1,31 @@
+# Normalise line endings.
+#
+# Without this, every commit from a Windows checkout warns about LF/CRLF
+# conversion and a Linux CI runner sees a diff on files nobody edited. Text is
+# stored as LF in the repository and checked out however the platform prefers.
+* text=auto eol=lf
+
+# Windows-only tooling that genuinely needs CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary — never touch, never diff.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.jar binary
+*.keystore binary
+*.jks binary
+*.apk binary
+*.aab binary
+
+# Generated: collapsed in pull requests so review focuses on hand-written code.
+lib/l10n/generated/** linguist-generated=true
+pubspec.lock linguist-generated=true

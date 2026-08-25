@@ -49,7 +49,6 @@ void main() {
       Routes.login,
       reason: 'a signed-out launch should end on the sign-in screen',
     );
-
   });
 
   testWidgets('the demo CTA signs in and opens the workspace', (

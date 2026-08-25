@@ -11,8 +11,8 @@ Kairo is a multi-platform task manager — list, board, calendar and timeline vi
 | **Type** | Cross-platform application (portfolio / architecture study) |
 | **Stack** | Flutter · Dart · Riverpod · go_router · Hive |
 | **Platforms configured** | Android, iOS, Web, Windows, macOS, Linux |
-| **Scale** | 125 Dart files · ~40,000 lines (excl. generated localisation) |
-| **Tests** | 209 passing · 3,019 lines of test code |
+| **Scale** | 120 Dart files · ~37,500 lines (excl. generated localisation) |
+| **Tests** | 201 passing · ~3,000 lines of test code |
 | **Static analysis** | `flutter analyze` clean under a strict ruleset |
 | **Backend** | None — local-first by design |
 | **Licence** | MIT |
@@ -75,7 +75,7 @@ Further screenshots (sign-in, additional views) are in [`pic/`](pic/).
 
 ## Architecture
 
-Four layers with a strict dependency direction. `domain` depends on nothing; `data` implements `domain`; `features` depend on `domain` abstractions and never on `data`.
+Four layers with a strict dependency direction. `domain` depends on nothing — not even Flutter; `data` implements `domain`; `features` depend on `domain` abstractions and never on `data`. All four directions are asserted by grep in the audit, not assumed.
 
 ```mermaid
 flowchart TD
@@ -368,29 +368,25 @@ Verified locally: web and Android release builds succeed with no warnings. A fat
 
 ## Known limitations
 
-Stated in full, including two defects present in the current code.
-
-**Defects**
-
-1. **Dead routes.** `Routes.onboarding`, `Routes.landing`, `Routes.pricing` and `Routes.about` are declared in `routes.dart` and navigated to from live code, but **no `GoRoute` registers them**. `startupProvider` sends a first-time signed-in user to `/onboarding`, which resolves to the 404 screen. The onboarding feature was removed from `lib/features/` without updating the startup decision or the route table. This is user-reachable.
-2. **~2,700 lines of unreachable code.** The marketing screens (`lib/features/marketing/`) remain on disk with no route pointing at them, and `lib/features/onboarding/` is now an empty directory. `test/responsive/overflow_matrix_test.dart` still contains an onboarding group that silently asserts against the 404 page, and `test/app/startup_test.dart` asserts a route that no longer resolves — both pass, which is why the suite did not catch this.
+Stated in full. No known user-facing defect is outstanding.
 
 **Scope**
 
-3. No backend, API, or remote database. No multi-device sync; data is local to one install.
-4. Authentication is demo-grade — SHA-256 without key stretching, a published demo password, and seeded accounts that accept any 8-character password.
-5. Social sign-in is UI only (and says so when pressed).
-6. Pricing figures are illustrative; there is no payment integration.
+1. No backend, API, or remote database. No multi-device sync; data is local to one install.
+2. Authentication is demo-grade — SHA-256 without key stretching, a published demo password, and seeded accounts that accept any 8-character password.
+3. Social sign-in is UI only (and says so when pressed).
+4. There is no marketing site, pricing page or onboarding flow. Those screens existed, were left unreachable by a refactor, and were deleted in the cleanup rather than left as dead code.
 
 **Engineering infrastructure**
 
-7. **No CI.** No `.github/workflows`; analyze, test and build are run manually.
-8. **Not a Git repository.** The directory has no `.git`, so there is no commit history to review.
-9. No crash reporting, analytics or observability.
-10. No test coverage measurement, no golden tests, no performance regression tests.
-11. English only; RTL untested.
-12. iOS is configured but never built — no macOS machine available.
-13. `compileSdk` is pinned to 36 and `flutter_secure_storage` held at 9.x because API 37 is still a preview on the development machine.
+5. **No CI.** No `.github/workflows`; analyze, test and build are run manually. This is the largest remaining gap.
+6. No crash reporting, analytics or observability.
+7. No test coverage measurement, no golden tests, no performance regression tests.
+8. **Localisation is partial.** 411 strings go through ARB, but roughly 58 user-facing strings outside the demo seed are still hardcoded in widgets. With one shipping locale this changes nothing observable, which is exactly why it went unnoticed.
+9. English only; direction-aware widgets are used but RTL is untested.
+10. Android release builds are signed with the debug keystore so a clean checkout builds. A real release needs a keystore supplied through an uncommitted `key.properties`.
+11. iOS is configured but never built — no macOS machine available.
+12. `compileSdk` is pinned to 36 and `flutter_secure_storage` held at 9.x because API 37 is still a preview on the development machine.
 
 ---
 
@@ -398,12 +394,12 @@ Stated in full, including two defects present in the current code.
 
 Ordered by what the current architecture makes cheapest:
 
-1. **Fix the dead routes** — either restore the onboarding and marketing routes or remove the declarations and the code that navigates to them. Add a test asserting every declared route resolves.
-2. **Initialise Git and add CI** — a workflow running `flutter analyze`, `flutter test` and the release builds is the single highest-value addition.
+1. **Add CI** — a workflow running `flutter analyze`, `flutter test` and the release builds is the single highest-value addition, and the one thing that would have caught the dead-route regression before a user did.
+2. **Finish the localisation pass** — move the remaining hardcoded strings into ARB, then add a second locale to prove the pipeline.
 3. **Add an HTTP repository implementation** — the interfaces and the composition root already make this a `data/` change plus one override.
 4. **Move authentication to a real identity provider** rather than strengthening the local hash, which would still be client-side.
 5. **Coverage measurement and golden tests** to complement the layout matrices.
-6. **A second locale, including an RTL one**, to convert "direction-aware" into demonstrated RTL support.
+6. **A second, RTL locale** to convert "direction-aware" into demonstrated RTL support.
 
 ---
 
@@ -421,7 +417,7 @@ Ordered by what the current architecture makes cheapest:
 | Tooling | `flutter_lints` + a strict custom ruleset, `dart format` |
 | Backend / CI | **None** |
 
-**Dependency posture.** Eleven third-party packages plus the two Flutter SDK entries. Each was checked against actual imports before being kept. Charts, the design system, markdown rendering, the animation system and fuzzy search are implemented rather than imported.
+**Dependency posture.** Twelve third-party packages plus the two Flutter SDK entries. Each was checked against actual imports before being kept. Charts, the design system, markdown rendering, the animation system and fuzzy search are implemented rather than imported.
 
 ---
 
@@ -452,9 +448,9 @@ Each claim maps to something inspectable:
 
 | Capability | Evidence |
 |---|---|
-| Layered architecture and dependency inversion | `domain/` has no Flutter import; `features/` never import `data/` |
+| Layered architecture and dependency inversion | `domain/` imports no Flutter and no `data/`; `features/` never import `data/` |
 | Composition-root design | `app/providers.dart` — whole graph, three seams |
-| State management at scale | Riverpod across 14 live features, with `.select` used to bound rebuilds |
+| State management at scale | Riverpod across 14 features, with `.select` used to bound rebuilds |
 | Non-trivial domain logic | Cycle detection, recurrence expansion, query engine — all unit-tested |
 | Test strategy that finds real defects | 716 → 0 layout errors; a device-reported crash reproduced in a test first |
 | Debugging methodology | Reading full `FlutterErrorDetails` rather than the headline found a `Tooltip`/`Overlay` bug disguised as an overflow |
