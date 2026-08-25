@@ -11,7 +11,6 @@ import 'package:kairo/core/utils/validators.dart';
 import 'package:kairo/core/widgets/app_button.dart';
 import 'package:kairo/core/widgets/app_text_field.dart';
 import 'package:kairo/core/widgets/app_toast.dart';
-import 'package:kairo/domain/entities/preferences.dart';
 import 'package:kairo/domain/entities/user.dart';
 import 'package:kairo/features/auth/application/auth_controller.dart';
 import 'package:kairo/features/auth/presentation/widgets/auth_scaffold.dart';
@@ -177,7 +176,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   Future<void> _submit() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    final bool ok = await ref
+    await ref
         .read(authControllerProvider.notifier)
         .signUp(
           l10n: context.l10n,
@@ -185,15 +184,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           email: _email.text,
           password: _password.text,
         );
-    // A new account has an empty workspace, so it goes through onboarding
-    // rather than landing on a blank dashboard.
-    if (ok && mounted) {
-      await ref
-          .read(preferencesProvider.notifier)
-          .update(
-            (UserPreferences p) => p.copyWith(hasCompletedOnboarding: false),
-          );
-    }
   }
 
   @override

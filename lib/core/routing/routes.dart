@@ -8,22 +8,12 @@ abstract final class Routes {
   /// decision, so no product screen ever renders against an unloaded store.
   static const String splash = '/';
 
-  // Marketing (unauthenticated, indexable). Deliberately *not* mounted at the
-  // root: the root belongs to the application, and the marketing site is a
-  // separate zone you navigate to, never one the app can land in by default.
-  static const String landing = '/welcome';
-  static const String pricing = '/pricing';
-  static const String about = '/about';
-
   // Authentication.
   static const String login = '/login';
   static const String signup = '/signup';
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
   static const String verifyEmail = '/verify-email';
-
-  // Onboarding.
-  static const String onboarding = '/onboarding';
 
   // Application shell.
   static const String dashboard = '/dashboard';
@@ -72,15 +62,40 @@ abstract final class Routes {
     focus,
   ];
 
-  /// Routes that render the marketing chrome instead of the app shell.
-  static const Set<String> marketingRoutes = <String>{landing, pricing, about};
+  /// Every route the router registers.
+  ///
+  /// This list exists because the alternative failed: route constants were
+  /// declared here and navigated to from live code while no `GoRoute` matched
+  /// them, so the app sent people to a 404 and nothing complained. Keeping the
+  /// full set in one place lets a test assert that the router and this table
+  /// have not drifted apart.
+  static const Set<String> allRegistered = <String>{
+    splash,
+    login,
+    signup,
+    forgotPassword,
+    resetPassword,
+    verifyEmail,
+    dashboard,
+    tasks,
+    inbox,
+    projects,
+    projectDetail,
+    calendar,
+    timeline,
+    focus,
+    analytics,
+    notifications,
+    search,
+    favorites,
+    archive,
+    settings,
+    settingsSection,
+  };
 
   /// Routes reachable without a session.
   static const Set<String> publicRoutes = <String>{
     splash,
-    landing,
-    pricing,
-    about,
     login,
     signup,
     forgotPassword,

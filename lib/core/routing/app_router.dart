@@ -8,7 +8,6 @@ import 'package:kairo/core/routing/routes.dart';
 import 'package:kairo/core/theme/app_icons.dart';
 import 'package:kairo/core/theme/design_tokens.dart';
 import 'package:kairo/core/widgets/app_states.dart';
-import 'package:kairo/domain/entities/preferences.dart';
 import 'package:kairo/features/analytics/presentation/analytics_screen.dart';
 import 'package:kairo/features/auth/presentation/auth_screens.dart';
 import 'package:kairo/features/calendar/presentation/calendar_screen.dart';
@@ -27,14 +26,12 @@ import 'package:kairo/features/timeline/presentation/timeline_screen.dart';
 
 /// The router.
 ///
-/// Four zones: the splash that owns startup, the public marketing site, the
-/// authentication flow, and the application shell. `redirect` is the only place
-/// that decides which zone you belong in, so there is never a screen that
-/// pushes you somewhere behind the router's back.
+/// Three zones: the splash that owns startup, the authentication flow, and the
+/// application shell. `redirect` is the only place that decides which zone you
+/// belong in, so there is never a screen that pushes you somewhere behind the
+/// router's back.
 ///
-/// The application always enters at [Routes.splash]. The marketing site lives
-/// at its own path and is somewhere you navigate to — never the default
-/// destination of the product itself.
+/// The application always enters at [Routes.splash].
 final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
   final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>(
     debugLabel: 'root',
@@ -59,14 +56,10 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
 
       final bool signedIn = ref.read(isSignedInProvider);
 
-
       // Signed out: only the public site and the auth flow are reachable.
       if (!signedIn) {
         return Routes.isPublic(location) ? null : Routes.login;
       }
-
-      // Signed in but not through onboarding: finish that first.
-
 
       // Signed in and landing on an auth screen: send them into the app.
       const Set<String> authRoutes = <String>{
@@ -96,7 +89,6 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
             ),
       ),
 
-
       // --- Authentication ---------------------------------------------------
       GoRoute(
         path: Routes.login,
@@ -125,7 +117,6 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
         pageBuilder: (BuildContext context, GoRouterState state) =>
             _fade(state, const VerifyEmailScreen()),
       ),
-
 
       // --- Application ------------------------------------------------------
       ShellRoute(
@@ -299,22 +290,15 @@ CustomTransitionPage<void> _shellPage(GoRouterState state, Widget child) {
   );
 }
 
-/// Rebuilds the router when the session or the onboarding flag changes, which
-/// is what makes `redirect` re-run after sign in and sign out.
+/// Rebuilds the router when the session changes, which is what makes
+/// `redirect` re-run after sign in and sign out.
+///
+/// The session is the only input `redirect` reads that can change while the
+/// app is running, so it is the only thing worth listening to.
 class _RouterRefresh extends ChangeNotifier {
-  _RouterRefresh(this._ref) {
-    _ref.listen<bool>(isSignedInProvider, (_, _) => notifyListeners());
-    _ref.listen<UserPreferences>(preferencesProvider, (
-      UserPreferences? previous,
-      UserPreferences next,
-    ) {
-      if (previous?.hasCompletedOnboarding != next.hasCompletedOnboarding) {
-        notifyListeners();
-      }
-    });
+  _RouterRefresh(Ref ref) {
+    ref.listen<bool>(isSignedInProvider, (_, _) => notifyListeners());
   }
-
-  final Ref _ref;
 }
 
 class _RouteNotFound extends StatelessWidget {
@@ -334,8 +318,6 @@ class _RouteNotFound extends StatelessWidget {
             message: '${context.l10n.errorRouteBody}\n\n$location',
             actionLabel: context.l10n.errorGoHome,
             onAction: () => GoRouter.of(context).go(Routes.dashboard),
-            secondaryActionLabel: 'Go to kairo.app',
-            onSecondaryAction: () => GoRouter.of(context).go(Routes.landing),
           ),
         ),
       ),

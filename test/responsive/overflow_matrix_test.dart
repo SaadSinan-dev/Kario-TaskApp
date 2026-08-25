@@ -62,9 +62,6 @@ void main() {
     'login': Routes.login,
     'signup': Routes.signup,
     'forgot-password': Routes.forgotPassword,
-    'landing': Routes.landing,
-    'pricing': Routes.pricing,
-    'about': Routes.about,
   };
 
   /// Seeds preferences through the real serialiser, before the container is
@@ -75,17 +72,12 @@ void main() {
   /// Seeding `SharedPreferences` sidesteps the clock and still exercises the
   /// production `fromJson` path.
   Map<String, Object> seededPreferences({
-    bool onboarded = true,
     ThemePreference theme = ThemePreference.light,
     TaskViewType view = TaskViewType.list,
   }) {
     return <String, Object>{
       SettingsKeys.preferences: jsonEncode(
-        UserPreferences(
-          theme: theme,
-          hasCompletedOnboarding: onboarded,
-          defaultTaskView: view,
-        ).toJson(),
+        UserPreferences(theme: theme, defaultTaskView: view).toJson(),
       ),
     };
   }
@@ -275,7 +267,7 @@ void main() {
     }
   });
 
-  group('splash, auth and marketing at every supported size', () {
+  group('splash and auth at every supported size', () {
     late TestHarness harness;
 
     setUp(() async {
@@ -296,26 +288,29 @@ void main() {
     }
   });
 
-  group('onboarding at every supported size', () {
-    late TestHarness harness;
+  // Every route the router registers is swept above. This asserts the two
+  // lists have not drifted apart — a route added without a matrix entry is a
+  // screen nobody is checking, which is how the responsive regressions got in
+  // the first time.
+  test('the sweep covers every registered route', () {
+    final Set<String> swept = <String>{
+      ...appRoutes.values,
+      ...publicRoutes.values,
+    };
+    const Set<String> parameterised = <String>{
+      Routes.projectDetail,
+      Routes.settingsSection,
+      Routes.resetPassword,
+      Routes.verifyEmail,
+    };
 
-    setUp(() async {
-      harness = await TestHarness.create(
-        preferences: seededPreferences(onboarded: false),
+    for (final String route in Routes.allRegistered) {
+      if (parameterised.contains(route)) continue;
+      expect(
+        swept,
+        contains(route),
+        reason: '$route is registered but never rendered by the matrix',
       );
-    });
-    tearDown(() => harness.dispose());
-
-    for (final MapEntry<String, Size> device in devices.entries) {
-      testWidgets(device.key, (WidgetTester tester) async {
-        final List<String> failures = await sweep(
-          tester,
-          harness,
-          const <String, String>{'onboarding': Routes.onboarding},
-          device.value,
-        );
-        expect(failures, isEmpty, reason: '\n${failures.join('\n')}');
-      });
     }
   });
 }

@@ -7,7 +7,7 @@ import 'package:kairo/app/startup.dart';
 import 'package:kairo/core/motion/motion_scope.dart';
 import 'package:kairo/core/theme/app_palette.dart';
 import 'package:kairo/core/theme/design_tokens.dart';
-import 'package:kairo/features/marketing/presentation/widgets/brand.dart';
+import 'package:kairo/core/widgets/brand_mark.dart';
 
 /// The application entry screen.
 ///

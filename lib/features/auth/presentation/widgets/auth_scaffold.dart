@@ -6,7 +6,7 @@ import 'package:kairo/core/theme/app_icons.dart';
 import 'package:kairo/core/theme/design_tokens.dart';
 import 'package:kairo/core/widgets/app_badge.dart';
 import 'package:kairo/core/widgets/app_button.dart';
-import 'package:kairo/features/marketing/presentation/widgets/brand.dart';
+import 'package:kairo/core/widgets/brand_mark.dart';
 
 /// The frame shared by every authentication screen.
 ///

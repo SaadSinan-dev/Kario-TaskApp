@@ -45,7 +45,7 @@ void main() {
   Map<String, Object> seeded() {
     return <String, Object>{
       SettingsKeys.preferences: jsonEncode(
-        const UserPreferences(hasCompletedOnboarding: true).toJson(),
+        const UserPreferences().toJson(),
       ),
     };
   }

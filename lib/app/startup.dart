@@ -13,7 +13,7 @@ import 'package:kairo/domain/repositories/repositories.dart';
 /// Carrying the reason alongside the route keeps the decision auditable: a test
 /// can assert "a returning signed-in user goes to their landing route" without
 /// re-deriving the rule from a bare string.
-enum StartupDestination { onboarding, signIn, workspace }
+enum StartupDestination { signIn, workspace }
 
 class StartupResult {
   const StartupResult(this.destination, this.route);
@@ -55,12 +55,6 @@ final startupProvider = FutureProvider<StartupResult>((Ref ref) async {
 
   if (!signedIn) {
     return const StartupResult(StartupDestination.signIn, Routes.login);
-  }
-  if (!preferences.hasCompletedOnboarding) {
-    return const StartupResult(
-      StartupDestination.onboarding,
-      Routes.onboarding,
-    );
   }
   return StartupResult(StartupDestination.workspace, preferences.landingRoute);
 });

@@ -49,19 +49,7 @@ void main() {
       Routes.login,
       reason: 'a signed-out launch should end on the sign-in screen',
     );
-    expect(find.text('Start for free'), findsNothing);
-  });
 
-  testWidgets('the marketing site is reachable, but only on purpose', (
-    WidgetTester tester,
-  ) async {
-    final ProviderContainer container = await launch(tester);
-    addTearDown(container.dispose);
-
-    container.read(routerProvider).go(Routes.landing);
-    await tester.pumpAndSettle(const Duration(seconds: 2));
-
-    expect(find.textContaining('command center'), findsWidgets);
   });
 
   testWidgets('the demo CTA signs in and opens the workspace', (
@@ -70,12 +58,9 @@ void main() {
     final ProviderContainer container = await launch(tester);
     addTearDown(container.dispose);
 
-    container.read(routerProvider).go(Routes.landing);
-    await tester.pumpAndSettle(const Duration(seconds: 2));
-
-    final Finder demoButton = find
-        .widgetWithText(AppButton, 'Explore demo')
-        .first;
+    // The demo card sits on the sign-in screen, which is where a signed-out
+    // launch already lands.
+    final Finder demoButton = find.widgetWithText(AppButton, 'Open').first;
     await tester.ensureVisible(demoButton);
     await tester.tap(demoButton);
     await tester.pumpAndSettle(const Duration(seconds: 3));

@@ -84,7 +84,6 @@ class UserPreferences {
     this.landingRoute = '/dashboard',
     this.focus = const FocusSettings(),
     this.notifications = const NotificationPreferences(),
-    this.hasCompletedOnboarding = false,
     this.goal = ProductivityGoal.teamProjects,
     this.sidebarCollapsed = false,
     this.taskCompletionEffects = true,
@@ -105,7 +104,6 @@ class UserPreferences {
 
   final FocusSettings focus;
   final NotificationPreferences notifications;
-  final bool hasCompletedOnboarding;
   final ProductivityGoal goal;
   final bool sidebarCollapsed;
 
@@ -122,7 +120,6 @@ class UserPreferences {
     String? landingRoute,
     FocusSettings? focus,
     NotificationPreferences? notifications,
-    bool? hasCompletedOnboarding,
     ProductivityGoal? goal,
     bool? sidebarCollapsed,
     bool? taskCompletionEffects,
@@ -136,8 +133,6 @@ class UserPreferences {
       landingRoute: landingRoute ?? this.landingRoute,
       focus: focus ?? this.focus,
       notifications: notifications ?? this.notifications,
-      hasCompletedOnboarding:
-          hasCompletedOnboarding ?? this.hasCompletedOnboarding,
       goal: goal ?? this.goal,
       sidebarCollapsed: sidebarCollapsed ?? this.sidebarCollapsed,
       taskCompletionEffects:
@@ -154,7 +149,6 @@ class UserPreferences {
     'landingRoute': landingRoute,
     'focus': focus.toJson(),
     'notifications': notifications.toJson(),
-    'hasCompletedOnboarding': hasCompletedOnboarding,
     'goal': goal.name,
     'sidebarCollapsed': sidebarCollapsed,
     'taskCompletionEffects': taskCompletionEffects,
@@ -188,7 +182,6 @@ class UserPreferences {
       notifications: notificationsRaw is Map<dynamic, dynamic>
           ? NotificationPreferences.fromJson(asJsonMap(notificationsRaw))
           : const NotificationPreferences(),
-      hasCompletedOnboarding: readBool(json['hasCompletedOnboarding']),
       goal: enumFromName(
         ProductivityGoal.values,
         json['goal'],
