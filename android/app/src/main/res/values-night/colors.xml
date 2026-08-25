@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="kairo_canvas">#070B18</color>
+    <color name="kairo_brand">#3B6BF5</color>
+
+    <!-- `AppPalette.blue950` — the dark splash background, matching what the
+         Flutter splash paints when the system is in dark mode. -->
+    <color name="kairo_splash_background">#131F4C</color>
+</resources>

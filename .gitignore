@@ -1,0 +1,147 @@
+# ---------------------------------------------------------------------------
+# Kairo — .gitignore
+#
+# Scoped to what this project actually produces. Patterns for services the
+# project does not use (Firebase, Fastlane, CocoaPods lockfiles for a plugin
+# set that does not exist) are deliberately absent — an ignore file that lists
+# things you do not have hides which rules are load-bearing.
+#
+# What stays tracked on purpose:
+#   pubspec.lock          application, not a package: pinned builds matter
+#   lib/l10n/generated/   generated, but committed so a clean checkout builds
+#                         without running gen-l10n first
+#   android/ ios/ web/ windows/ macos/ linux/   platform projects are source
+#   pic/                  screenshots referenced by README.md
+# ---------------------------------------------------------------------------
+
+# --- Secrets and local configuration ---------------------------------------
+# .env.example is committed as documentation; real values never are.
+.env
+.env.*
+!.env.example
+secrets.dart
+*.pem
+*.p12
+*.p8
+
+# Android signing. A leaked keystore cannot be rotated the way a token can.
+*.jks
+*.keystore
+key.properties
+android/key.properties
+**/android/app/upload-keystore.jks
+
+# --- Dart / Flutter tooling -------------------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Symbolication and obfuscation output
+app.*.symbols
+app.*.map.json
+
+# --- Test output ------------------------------------------------------------
+coverage/
+test/**/failures/
+
+# --- Distributable binaries -------------------------------------------------
+# Builds belong on a release page, not in history — they bloat the repo
+# permanently even after deletion.
+*.apk
+*.aab
+*.ipa
+*.app.zip
+*.dSYM.zip
+
+# --- Android ----------------------------------------------------------------
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# --- iOS / macOS ------------------------------------------------------------
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Flutter/ephemeral/
+**/xcuserdata/
+
+# --- Windows / Linux desktop ------------------------------------------------
+**/windows/flutter/generated_plugin_registrant.*
+**/windows/flutter/generated_plugins.cmake
+**/linux/flutter/generated_plugin_registrant.*
+**/linux/flutter/generated_plugins.cmake
+
+# --- Web --------------------------------------------------------------------
+**/web/flutter_service_worker.js
+
+# --- IDE --------------------------------------------------------------------
+# .iml and .idea hold machine-local paths and personal window layout.
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code: shared task/launch config is useful, personal settings are not.
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# --- OS ---------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# --- Logs, dumps, scratch ---------------------------------------------------
+*.log
+*.swp
+*.bak
+*.tmp
+*~
+hs_err_pid*
+crash*.log
+.history/
+migrate_working_dir/

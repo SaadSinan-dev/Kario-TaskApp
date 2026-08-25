@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The pre-Android-12 launch window.
+
+     A flat brand field, matching the colour the Flutter splash paints. No logo
+     is drawn here: the Flutter splash animates its own mark in, and a static
+     copy underneath would visibly jump when the two swapped. On Android 12 and
+     above the platform splash screen API takes over — see values-v31. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/kairo_splash_background" />
+</layer-list>

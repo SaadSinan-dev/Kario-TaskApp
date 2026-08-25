@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12 and above.
+
+     From API 31 the platform draws the launch screen itself and ignores
+     `android:windowBackground`, so setting only that (as the pre-31 theme does)
+     produces the stock icon on a default background. These attributes are the
+     supported way to brand it: a flat brand field with the Kairo mark, matching
+     the Flutter splash that replaces it.
+
+     `windowSplashScreenAnimationDuration` is left unset — the mark is static
+     here and the motion belongs to the Flutter splash, which is the screen the
+     user actually watches. -->
+<resources>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowSplashScreenBackground">@color/kairo_splash_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/kairo_splash_icon</item>
+        <!-- Kept so the window is still branded during the hand-off to Flutter. -->
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@color/kairo_canvas</item>
+    </style>
+</resources>

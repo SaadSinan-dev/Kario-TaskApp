@@ -1,0 +1,75 @@
+name: kairo
+description: "Kairo — the command center for focused work. A production-grade task management platform built with Flutter."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management — providers, notifiers, async state.
+  flutter_riverpod: ^3.3.2
+
+  # Declarative routing with guards, deep links and shell navigation.
+  go_router: ^17.5.0
+
+  # Persistence: key/value settings, document store, and secure token storage.
+  shared_preferences: ^2.5.5
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  # Held at 9.x: 11.x compiles against Android SDK 37, which is still a preview
+  # platform. 9.2.4 exposes the same read/write/delete surface this app uses.
+  flutter_secure_storage: ^9.2.4
+
+  # Iconography — a single, consistent family. `cupertino_icons` is not used
+  # directly; Flutter's Cupertino text-selection controls reference the font,
+  # so it is declared to keep the release font manifest complete.
+  lucide_icons_flutter: ^3.1.17
+  cupertino_icons: ^1.0.9
+
+  # Utilities.
+  uuid: ^4.6.0
+  intl: ^0.20.2
+  crypto: ^3.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Virtual clock for testing the focus timer without real waiting.
+  fake_async: ^1.3.1
+
+flutter:
+  uses-material-design: true
+
+  # Generates the ARB-backed localisation accessors (see l10n.yaml).
+  generate: true
+
+  fonts:
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans_400Regular.ttf
+          weight: 400
+        - asset: assets/fonts/PlusJakartaSans_500Medium.ttf
+          weight: 500
+        - asset: assets/fonts/PlusJakartaSans_600SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PlusJakartaSans_700Bold.ttf
+          weight: 700
+        - asset: assets/fonts/PlusJakartaSans_800ExtraBold.ttf
+          weight: 800
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono_400Regular.ttf
+          weight: 400
+        - asset: assets/fonts/JetBrainsMono_500Medium.ttf
+          weight: 500

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Kairo brand. Matches `AppPalette` so the native launch window and the
+         first Flutter frame are the same colour. -->
+    <color name="kairo_canvas">#F6F8FC</color>
+    <color name="kairo_brand">#3B6BF5</color>
+
+    <!-- The launch window's background. This is deliberately the *splash*
+         colour, not the app canvas: the native window is on screen until
+         Flutter's first frame, and the first frame is the splash. Matching them
+         removes the white flash between the two. `AppPalette.blue600`. -->
+    <color name="kairo_splash_background">#2451E6</color>
+</resources>

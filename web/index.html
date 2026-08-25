@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="$FLUTTER_BASE_HREF" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Kairo — The command center for focused work</title>
+    <meta
+      name="description"
+      content="Kairo is a task management platform for people who ship. Plan in list, board, calendar and timeline views, protect deep work with Focus Mode, and run everything from the keyboard."
+    />
+    <meta name="author" content="Kairo" />
+    <meta name="theme-color" content="#3B6BF5" />
+    <link rel="canonical" href="https://kairo.app/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kairo" />
+    <meta property="og:title" content="Kairo — The command center for focused work" />
+    <meta
+      property="og:description"
+      content="Plan in list, board, calendar and timeline views. Protect deep work with Focus Mode. Run everything from the keyboard."
+    />
+    <meta property="og:url" content="https://kairo.app/" />
+    <meta property="og:image" content="icons/og-image.svg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kairo — The command center for focused work" />
+    <meta
+      name="twitter:description"
+      content="Plan in four views. Protect deep work with Focus Mode. Keyboard first."
+    />
+    <meta name="twitter:image" content="icons/og-image.svg" />
+
+    <!-- iOS home-screen support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Kairo" />
+    <link rel="apple-touch-icon" href="icons/app-icon.svg" />
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="manifest" href="manifest.json" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Kairo",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "description": "A task management platform with list, board, calendar and timeline views, a focus timer, and a keyboard-first command palette.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" }
+      }
+    </script>
+
+    <style>
+      /* Splash: a still frame of the brand mark, shown until Flutter paints
+         its first frame — which is Kairo's own animated splash. The colours
+         below are AppPalette.blue600 / blue950, the exact backgrounds that
+         splash paints, so the hand-off from HTML to Flutter has no flash. */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background-color: #2451e6;
+      }
+      @media (prefers-color-scheme: dark) {
+        html,
+        body {
+          background-color: #131f4c;
+        }
+      }
+      #kairo-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+      #kairo-splash.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .kairo-mark {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        /* White tile on the blue field — the inverse of the in-app mark,
+           which sits on a light canvas. Matches BrandMark(onDark: true). */
+        background: rgba(255, 255, 255, 0.96);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: kairo-rise 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .kairo-word {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+        color: rgba(255, 255, 255, 0.86);
+        animation: kairo-rise 620ms 120ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      @keyframes kairo-rise {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .kairo-mark,
+        .kairo-word {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="kairo-splash">
+      <div class="kairo-mark">
+        <svg width="32" height="32" viewBox="0 0 64 64" aria-hidden="true">
+          <path
+            d="M20 44a17 17 0 1 1 24 0"
+            fill="none"
+            stroke="#2451e6"
+            stroke-width="6.5"
+            stroke-linecap="round"
+          />
+          <circle cx="44" cy="44" r="6" fill="#2451e6" />
+        </svg>
+      </div>
+      <div class="kairo-word">Kairo</div>
+    </div>
+
+    <script>
+      // Remove the splash as soon as Flutter reports its first frame.
+      window.addEventListener('flutter-first-frame', function () {
+        var splash = document.getElementById('kairo-splash');
+        if (!splash) return;
+        splash.classList.add('hidden');
+        setTimeout(function () {
+          splash.remove();
+        }, 360);
+      });
+    </script>
+    <script src="flutter_bootstrap.js" async></script>
+  </body>
+</html>

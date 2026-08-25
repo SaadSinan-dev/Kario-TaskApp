@@ -1,0 +1,10 @@
+# Flutter's built-in ARB localisation generator (`flutter gen-l10n`).
+#
+# Generated sources are written into the repository (rather than a synthetic
+# package) so they are visible, greppable and reviewable in pull requests.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppL10n
+output-dir: lib/l10n/generated
+nullable-getter: false
