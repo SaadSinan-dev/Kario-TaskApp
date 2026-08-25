@@ -7,7 +7,6 @@ import 'package:kairo/data/local/local_store.dart';
 import 'package:kairo/data/local/value_stream.dart';
 import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/focus_session.dart';
-import 'package:kairo/domain/entities/json_support.dart';
 import 'package:kairo/domain/entities/preferences.dart';
 import 'package:kairo/domain/repositories/repositories.dart';
 
@@ -91,8 +90,3 @@ class LocalPreferencesRepository implements PreferencesRepository {
     return const UserPreferences();
   }
 }
-
-/// Kept for symmetry with the other repositories: converts a stored JSON blob
-/// back into preferences without a running app, used by tests.
-UserPreferences decodePreferences(JsonMap json) =>
-    UserPreferences.fromJson(json);

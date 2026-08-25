@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/json_support.dart';
+import 'package:meta/meta.dart';
 
 /// An emoji reaction and who left it.
 @immutable

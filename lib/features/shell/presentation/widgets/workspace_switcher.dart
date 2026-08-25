@@ -7,7 +7,6 @@ import 'package:kairo/core/motion/motion_scope.dart';
 import 'package:kairo/core/theme/app_icons.dart';
 import 'package:kairo/core/theme/design_tokens.dart';
 import 'package:kairo/core/widgets/app_avatar.dart';
-import 'package:kairo/core/widgets/app_badge.dart';
 import 'package:kairo/core/widgets/app_button.dart';
 import 'package:kairo/core/widgets/app_overlays.dart';
 import 'package:kairo/core/widgets/app_text_field.dart';
@@ -277,22 +276,6 @@ class _SwitcherTriggerState extends State<_SwitcherTrigger> {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Compact plan badge reused by settings and the pricing page.
-class PlanBadge extends StatelessWidget {
-  const PlanBadge({required this.plan, super.key});
-
-  final String plan;
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBadge(
-      label: plan.toUpperCase(),
-      tone: plan == 'free' ? BadgeTone.neutral : BadgeTone.brand,
-      compact: true,
     );
   }
 }

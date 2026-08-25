@@ -14,10 +14,10 @@ import 'package:kairo/core/widgets/app_segmented.dart';
 import 'package:kairo/core/widgets/app_skeleton.dart';
 import 'package:kairo/core/widgets/app_states.dart';
 import 'package:kairo/core/widgets/app_toast.dart';
-import 'package:kairo/data/repositories/project_repository_impl.dart';
 import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/project.dart';
 import 'package:kairo/domain/entities/task.dart';
+import 'package:kairo/domain/services/project_stats_calculator.dart';
 import 'package:kairo/features/dashboard/presentation/widgets/dashboard_widgets.dart';
 import 'package:kairo/features/projects/presentation/widgets/project_editor.dart';
 import 'package:kairo/features/shell/presentation/app_shell.dart';
@@ -107,7 +107,7 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                     ProjectProgressCard(
                       index: i,
                       project: projects[i],
-                      stats: LocalProjectRepository.computeStats(
+                      stats: ProjectStatsCalculator.forProject(
                         projects[i].id,
                         tasks,
                       ),

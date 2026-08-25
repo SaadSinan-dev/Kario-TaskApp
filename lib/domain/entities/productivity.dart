@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:kairo/domain/entities/enums.dart';
+import 'package:meta/meta.dart';
 
 /// One day's worth of counters. The unit every chart in the app is built from.
 @immutable

@@ -21,13 +21,13 @@ import 'package:kairo/core/widgets/app_states.dart';
 import 'package:kairo/core/widgets/app_surfaces.dart';
 import 'package:kairo/core/widgets/charts/bar_donut_charts.dart';
 import 'package:kairo/core/widgets/charts/chart_core.dart';
-import 'package:kairo/data/repositories/project_repository_impl.dart';
 import 'package:kairo/domain/entities/collaboration.dart';
 import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/preferences.dart';
 import 'package:kairo/domain/entities/project.dart';
 import 'package:kairo/domain/entities/task.dart';
 import 'package:kairo/domain/entities/user.dart';
+import 'package:kairo/domain/services/project_stats_calculator.dart';
 import 'package:kairo/features/calendar/presentation/widgets/calendar_views.dart';
 import 'package:kairo/features/projects/presentation/projects_screen.dart';
 import 'package:kairo/features/projects/presentation/widgets/project_editor.dart';
@@ -100,7 +100,7 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen> {
     final List<Task> projectTasks = ref.watch(
       filteredProjectTasksProvider(project.id),
     );
-    final ProjectStats stats = LocalProjectRepository.computeStats(
+    final ProjectStats stats = ProjectStatsCalculator.forProject(
       project.id,
       allTasks,
     );

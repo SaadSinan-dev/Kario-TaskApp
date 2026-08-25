@@ -35,27 +35,3 @@ class Debouncer {
 }
 
 /// Guarantees at most one call per [interval] while still delivering the last
-/// value. Used for continuous gestures such as timeline scrubbing.
-class Throttler {
-  Throttler({this.interval = const Duration(milliseconds: 80)});
-
-  final Duration interval;
-  DateTime? _lastRun;
-  Timer? _trailing;
-
-  void run(VoidCallback action) {
-    final DateTime now = DateTime.now();
-    if (_lastRun == null || now.difference(_lastRun!) >= interval) {
-      _lastRun = now;
-      action();
-      return;
-    }
-    _trailing?.cancel();
-    _trailing = Timer(interval, () {
-      _lastRun = DateTime.now();
-      action();
-    });
-  }
-
-  void dispose() => _trailing?.cancel();
-}

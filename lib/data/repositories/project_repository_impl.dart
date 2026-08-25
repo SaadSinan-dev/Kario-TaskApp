@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:kairo/core/error/failure.dart';
-import 'package:kairo/core/utils/date_utils.dart';
 import 'package:kairo/core/utils/id_generator.dart';
 import 'package:kairo/data/local/kairo_database.dart';
 import 'package:kairo/domain/entities/collaboration.dart';
@@ -9,6 +8,7 @@ import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/project.dart';
 import 'package:kairo/domain/entities/task.dart';
 import 'package:kairo/domain/repositories/repositories.dart';
+import 'package:kairo/domain/services/project_stats_calculator.dart';
 
 class LocalProjectRepository implements ProjectRepository {
   LocalProjectRepository({
@@ -195,38 +195,7 @@ class LocalProjectRepository implements ProjectRepository {
 
   @override
   Future<ProjectStats> statsFor(String projectId) async =>
-      computeStats(projectId, _db.tasks.value);
-
-  /// Exposed as a static so the dashboard can compute the same numbers from a
-  /// task list it already has, without a second pass through the repository.
-  static ProjectStats computeStats(String projectId, List<Task> allTasks) {
-    final List<Task> tasks = allTasks
-        .where((Task t) => t.projectId == projectId && !t.isArchived)
-        .toList(growable: false);
-    if (tasks.isEmpty) return ProjectStats.empty;
-
-    final DateTime weekEnd = Dates.today().add(const Duration(days: 7));
-    int completed = 0, inProgress = 0, overdue = 0, dueThisWeek = 0;
-    for (final Task task in tasks) {
-      if (task.isDone) {
-        completed++;
-      } else {
-        if (task.status.isActive) inProgress++;
-        if (task.isOverdue) overdue++;
-        final DateTime? due = task.dueDate;
-        if (due != null && !due.isAfter(weekEnd) && !task.isOverdue) {
-          dueThisWeek++;
-        }
-      }
-    }
-    return ProjectStats(
-      total: tasks.length,
-      completed: completed,
-      inProgress: inProgress,
-      overdue: overdue,
-      dueThisWeek: dueThisWeek,
-    );
-  }
+      ProjectStatsCalculator.forProject(projectId, _db.tasks.value);
 
   @override
   Future<Milestone> upsertMilestone(String projectId, Milestone milestone) =>

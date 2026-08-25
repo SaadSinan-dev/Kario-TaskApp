@@ -9,9 +9,9 @@ import 'package:kairo/core/theme/app_icons.dart';
 import 'package:kairo/core/theme/design_tokens.dart';
 import 'package:kairo/core/widgets/app_states.dart';
 import 'package:kairo/core/widgets/app_surfaces.dart';
-import 'package:kairo/data/repositories/project_repository_impl.dart';
 import 'package:kairo/domain/entities/project.dart';
 import 'package:kairo/domain/entities/task.dart';
+import 'package:kairo/domain/services/project_stats_calculator.dart';
 import 'package:kairo/features/dashboard/presentation/widgets/dashboard_widgets.dart';
 import 'package:kairo/features/shell/presentation/app_shell.dart';
 import 'package:kairo/features/tasks/application/task_actions.dart';
@@ -83,7 +83,7 @@ class FavoritesScreen extends ConsumerWidget {
                   ProjectProgressCard(
                     index: i,
                     project: projects[i],
-                    stats: LocalProjectRepository.computeStats(
+                    stats: ProjectStatsCalculator.forProject(
                       projects[i].id,
                       allTasks,
                     ),
@@ -231,7 +231,7 @@ class _ArchivedProjectRow extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.colors;
-    final ProjectStats stats = LocalProjectRepository.computeStats(
+    final ProjectStats stats = ProjectStatsCalculator.forProject(
       project.id,
       tasks,
     );

@@ -437,23 +437,3 @@ List<_Block> _parseBlocks(String source) {
   flushParagraph();
   return blocks;
 }
-
-/// Strips formatting for previews, search snippets and screen-reader labels.
-String markdownToPlainText(String source) {
-  return source
-      .replaceAll(RegExp(r'```[\s\S]*?```'), ' ')
-      .replaceAll(RegExp(r'^#{1,6}\s+', multiLine: true), '')
-      .replaceAll(RegExp(r'^\s*[-*]\s+\[[ xX]\]\s+', multiLine: true), '')
-      .replaceAll(RegExp(r'^\s*[-*]\s+', multiLine: true), '')
-      .replaceAll(RegExp(r'^\s*\d+[.)]\s+', multiLine: true), '')
-      .replaceAll(RegExp(r'^>\s?', multiLine: true), '')
-      .replaceAll(RegExp(r'\*\*(.+?)\*\*'), r'$1')
-      .replaceAll(RegExp(r'\*(.+?)\*'), r'$1')
-      .replaceAll(RegExp('`([^`]+)`'), r'$1')
-      .replaceAllMapped(
-        RegExp(r'\[([^\]]+)\]\([^)]+\)'),
-        (Match m) => m.group(1)!,
-      )
-      .replaceAll(RegExp(r'\s+'), ' ')
-      .trim();
-}

@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/json_support.dart';
 import 'package:kairo/domain/entities/recurrence.dart';
+import 'package:meta/meta.dart';
 
 /// A checklist item inside a task.
 @immutable

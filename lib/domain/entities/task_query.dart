@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:kairo/domain/entities/enums.dart';
+import 'package:meta/meta.dart';
 
 /// A declarative description of "which tasks, in what order".
 ///
@@ -120,10 +120,10 @@ class TaskQuery {
   bool operator ==(Object other) =>
       other is TaskQuery &&
       other.projectId == projectId &&
-      setEquals(other.statuses, statuses) &&
-      setEquals(other.priorities, priorities) &&
-      setEquals(other.assigneeIds, assigneeIds) &&
-      setEquals(other.labelIds, labelIds) &&
+      _sameSet(other.statuses, statuses) &&
+      _sameSet(other.priorities, priorities) &&
+      _sameSet(other.assigneeIds, assigneeIds) &&
+      _sameSet(other.labelIds, labelIds) &&
       other.searchText == searchText &&
       other.dueFrom == dueFrom &&
       other.dueTo == dueTo &&
@@ -174,3 +174,12 @@ class TaskGroup<T> {
 
   int get count => items.length;
 }
+
+/// Set equality without a Flutter dependency.
+///
+/// `foundation.setEquals` would do the same job, but importing Flutter into the
+/// domain layer to compare two sets is the kind of small concession that makes
+/// a layer boundary decorative. Sets have no ordering, so equal length plus
+/// containment is exact.
+bool _sameSet<T>(Set<T> a, Set<T> b) =>
+    identical(a, b) || (a.length == b.length && a.containsAll(b));

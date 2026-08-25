@@ -4,7 +4,6 @@ import 'package:kairo/core/motion/motion_scope.dart';
 import 'package:kairo/core/responsive/breakpoints.dart';
 import 'package:kairo/core/theme/app_icons.dart';
 import 'package:kairo/core/theme/design_tokens.dart';
-import 'package:kairo/core/widgets/app_badge.dart';
 import 'package:kairo/core/widgets/app_button.dart';
 import 'package:kairo/core/widgets/brand_mark.dart';
 
@@ -520,35 +519,6 @@ class AuthTermsNotice extends StatelessWidget {
         color: context.colors.inkFaint,
         height: 1.5,
       ),
-    );
-  }
-}
-
-/// Keyboard hint chip reused by the auth screens.
-class SubmitHint extends StatelessWidget {
-  const SubmitHint({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          'Press',
-          style: context.textStyles.labelSmall?.copyWith(
-            color: context.colors.inkFaint,
-          ),
-        ),
-        const SizedBox(width: Spacing.xs + 1),
-        const KeycapHint(<String>['↵'], compact: true),
-        const SizedBox(width: Spacing.xs + 1),
-        Text(
-          'to continue',
-          style: context.textStyles.labelSmall?.copyWith(
-            color: context.colors.inkFaint,
-          ),
-        ),
-      ],
     );
   }
 }

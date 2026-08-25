@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:kairo/core/extensions/context_extensions.dart';
 import 'package:kairo/core/theme/app_icons.dart';
 import 'package:kairo/core/theme/kairo_colors.dart';
 import 'package:kairo/domain/entities/enums.dart';
@@ -229,7 +228,3 @@ extension ProductivityGoalPresentation on ProductivityGoal {
     ProductivityGoal.sideProject => TaskViewType.list,
   };
 }
-
-/// Resolves a colour stored as an ARGB int, falling back to the brand blue.
-Color colorFromValue(int? value, BuildContext context) =>
-    value == null ? context.colors.brand : Color(value);

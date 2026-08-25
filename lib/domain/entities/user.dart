@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:kairo/domain/entities/json_support.dart';
+import 'package:meta/meta.dart';
 
 /// A person who can sign in and be assigned work.
 @immutable

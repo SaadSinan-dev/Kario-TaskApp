@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:kairo/core/extensions/context_extensions.dart';
-import 'package:kairo/core/theme/design_tokens.dart';
 
 /// The Kairo mark.
 ///
@@ -151,76 +150,4 @@ class _GridPainter extends CustomPainter {
   @override
   bool shouldRepaint(_GridPainter old) =>
       old.spacing != spacing || old.color != color;
-}
-
-/// Soft radial glow used behind marketing headlines.
-class BrandGlow extends StatelessWidget {
-  const BrandGlow({
-    this.alignment = const Alignment(0, -0.7),
-    this.radius = 0.9,
-    this.strength = 0.22,
-    super.key,
-  });
-
-  final Alignment alignment;
-  final double radius;
-  final double strength;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return IgnorePointer(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(
-            center: alignment,
-            radius: radius,
-            colors: <Color>[
-              colors.brand.withValues(alpha: strength),
-              colors.brand.withValues(alpha: 0),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Brand chip used in marketing sections ("New · Focus Mode").
-class BrandEyebrowChip extends StatelessWidget {
-  const BrandEyebrowChip({required this.label, this.icon, super.key});
-
-  final String label;
-  final IconData? icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Spacing.md,
-        vertical: Spacing.sm - 2,
-      ),
-      decoration: BoxDecoration(
-        color: colors.brandSoft,
-        borderRadius: Radii.brPill,
-        border: Border.all(color: colors.brandBorder),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          if (icon != null) ...<Widget>[
-            Icon(icon, size: 13, color: colors.brand),
-            const SizedBox(width: Spacing.sm - 2),
-          ],
-          Text(
-            label,
-            style: context.textStyles.labelMedium?.copyWith(
-              color: colors.brand,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

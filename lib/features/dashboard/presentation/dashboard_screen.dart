@@ -15,12 +15,12 @@ import 'package:kairo/core/widgets/app_states.dart';
 import 'package:kairo/core/widgets/charts/bar_donut_charts.dart';
 import 'package:kairo/core/widgets/charts/chart_core.dart';
 import 'package:kairo/core/widgets/charts/line_area_chart.dart';
-import 'package:kairo/data/repositories/project_repository_impl.dart';
 import 'package:kairo/domain/entities/collaboration.dart';
 import 'package:kairo/domain/entities/productivity.dart';
 import 'package:kairo/domain/entities/project.dart';
 import 'package:kairo/domain/entities/task.dart';
 import 'package:kairo/domain/entities/user.dart';
+import 'package:kairo/domain/services/project_stats_calculator.dart';
 import 'package:kairo/features/dashboard/application/dashboard_data.dart';
 import 'package:kairo/features/dashboard/presentation/widgets/dashboard_widgets.dart';
 import 'package:kairo/features/shell/presentation/app_shell.dart';
@@ -315,7 +315,7 @@ class _DashboardBody extends ConsumerWidget {
                         ProjectProgressCard(
                           index: i,
                           project: projects[i],
-                          stats: LocalProjectRepository.computeStats(
+                          stats: ProjectStatsCalculator.forProject(
                             projects[i].id,
                             allTasks,
                           ),

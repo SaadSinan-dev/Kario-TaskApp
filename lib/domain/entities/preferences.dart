@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:kairo/domain/entities/enums.dart';
 import 'package:kairo/domain/entities/focus_session.dart';
 import 'package:kairo/domain/entities/json_support.dart';
+import 'package:meta/meta.dart';
 
 /// Which notification categories reach the user.
 @immutable
